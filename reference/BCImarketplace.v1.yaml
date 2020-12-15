@@ -1,0 +1,278 @@
+openapi: 3.0.0
+info:
+  title: BCImarketplace
+  version: '1.0'
+  description: ''
+servers:
+  - url: 'http://localhost:3000'
+paths:
+  /items:
+    get:
+      summary: Get all items
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  item:
+                    $ref: '#/components/schemas/item'
+        '404':
+          description: Not Found
+      operationId: get-Get-all-items
+      description: Get all items
+    parameters: []
+    post:
+      summary: Post an item
+      operationId: post-items
+      description: Post item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/item_no_id'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/item_no_id'
+        description: ''
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+  '/item/:id':
+    get:
+      summary: Get item by id
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item'
+        '404':
+          description: Not Found
+      operationId: 'get-item-:id'
+      description: Get item by id
+    delete:
+      summary: Delete item by id
+      operationId: 'delete-item-:id'
+      responses:
+        '200':
+          description: OK
+        '404':
+          description: Not Found
+      description: delete item
+    put:
+      summary: Modify item by id
+      operationId: 'put-item-:id'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item'
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+      description: Modify item
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/item_no_id'
+        description: ''
+  /user/register:
+    post:
+      summary: Register new user
+      operationId: post-user-register
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  name:
+                    type: string
+                  email:
+                    type: string
+                  password:
+                    type: string
+        '400':
+          description: Bad Request
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+      description: Register a user
+  /users:
+    get:
+      summary: Get all users
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+      operationId: get-users
+      description: Get all users
+  '/user/:id':
+    get:
+      summary: Get user by id
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/user'
+      operationId: 'get-user-:id'
+      description: Get user by id
+  '/item/:searchtype/:keyword':
+    get:
+      summary: Find with searchtype and keyword
+      tags: []
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+        '404':
+          description: Not Found
+      operationId: 'get-item-:searchtype-:keyword'
+      description: 'Find by location, category and date (for example: /item/category/auto)'
+components:
+  schemas:
+    item:
+      title: item
+      type: object
+      x-examples:
+        example-1:
+          id: '1'
+          title: iso kypärä
+          desc: jätti
+          category: ''
+          location: oulu
+          price: 12
+          date: 13.12.2020
+          deliveryType: string
+          name: Matias
+          tel: '1234234234'
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        desc:
+          type: string
+        category:
+          type: string
+        location:
+          type: string
+        price:
+          type: number
+        date:
+          type: string
+        deliveryType:
+          type: string
+          description: Here the user can say if its shipping or pickup
+        name:
+          type: string
+          description: name
+        tel:
+          type: string
+          description: telephone number
+      required:
+        - id
+        - title
+        - desc
+        - category
+        - location
+        - price
+        - date
+        - name
+        - tel
+    user:
+      title: user
+      type: object
+      x-examples:
+        example-1:
+          id: 1
+          username: matias
+          email: matias@matias.matias
+          password: olenparas123
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - id
+        - username
+        - email
+        - password
+    item_no_id:
+      description: ''
+      type: object
+      properties:
+        title:
+          type: string
+          minLength: 1
+        desc:
+          type: string
+          minLength: 1
+        category:
+          type: string
+          minLength: 1
+        location:
+          type: string
+          minLength: 1
+        price:
+          type: number
+        date:
+          type: string
+          minLength: 1
+        deliveryType:
+          type: string
+          minLength: 1
+        name:
+          type: string
+          minLength: 1
+        tel:
+          type: string
+          minLength: 1
+      required:
+        - title
+        - desc
+        - category
+        - location
+        - price
+        - date
+        - deliveryType
+        - name
+        - tel
