@@ -156,6 +156,10 @@ paths:
       responses:
         '200':
           description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/item'
         '400':
           description: Bad Request
         '404':
@@ -172,11 +176,11 @@ components:
           id: '1'
           title: iso kypärä
           desc: jätti
-          category: ''
+          category: auto
           location: oulu
           price: 12
           date: 13.12.2020
-          deliveryType: string
+          deliveryType: Pickup
           name: Matias
           tel: '1234234234'
       properties:
